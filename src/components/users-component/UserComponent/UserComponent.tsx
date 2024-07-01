@@ -17,4 +17,5 @@ const UserComponent:FC<IProps> = ({user,getComments}) => {
     );
 };
 
+
 export default UserComponent;
