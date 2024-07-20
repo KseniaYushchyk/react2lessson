@@ -1,37 +1,30 @@
-import React, {useEffect, useState} from 'react';
+import React, {Component} from 'react';
 import {IUser} from "../../models/IUser";
-import UserComponent from "./UserComponent/UserComponent";
-import {getAllUsers, getCommentsOfUserById} from "../../services/api.get-all-users"
-import {IComments} from "../../models/IComments";
-import CommentsOfUser from "../CommentsOfUser/CommentsOfUser";
+import {userService} from "../../services/api.get-all-users";
+import UserComponent from "../user-component/UserComponent";
 
-const UsersComponent = () => {
-    const [users, setUsers] = useState<IUser[]>([])
+type stateType={
+    users: IUser[]
+}
 
-    useEffect(() => {
-        getAllUsers().then((value:IUser[]) => {
-            setUsers(value)
-        });
-    }, [])
+class UsersComponent extends Component <{}, stateType> {
 
-    const getComments = (id:number) =>{
-        getCommentsOfUserById(id,10).then((comments:IComments[])=>{setComments([...comments])})
+    state:stateType = {
+        users:[]
+    }
+    componentDidMount() {
+        userService.getAll().then(value => this.setState({users:value}))
     }
 
-    const [comments, setComments] = useState<IComments[]>([])
-
-    return (
-        <div>
-        <div>
-            {users.map(user => (<UserComponent key={user.id} user={user} getComments={getComments}/>))}
-        </div>
-            <hr></hr>
-         <div>
-             <CommentsOfUser comments={comments}/>
-         </div>   
-        </div>
-            
-    );
-};
+    render() {
+        return (
+            <div>
+                {
+                this.state.users.map(user => (<UserComponent key={user.id} user={user}/>))
+                }
+            </div>
+        );
+    }
+}
 
 export default UsersComponent;
