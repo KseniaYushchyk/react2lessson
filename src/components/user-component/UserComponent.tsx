@@ -11,6 +11,6 @@ class UserComponent extends Component<PropType> {
             </div>
         );
     }
-}
+ }
 
 export default UserComponent;
